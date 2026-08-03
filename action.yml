@@ -41,8 +41,22 @@ runs:
 
     - name: Commit and push if there are changes
       shell: bash
+      working-directory: ${{ github.workspace }}
       run: |
-        git config --global user.name 'GitHub Action'
-        git config --global user.email 'action@github.com'
-        git add "${{ github.workspace }}/${{ inputs.output_directory }}"/*.fit
-        git diff --quiet && git diff --staged --quiet || (git commit -m "New Intervals.icu activities [skip ci]" && git push)
+        git config user.name 'GitHub Action'
+        git config user.email 'action@github.com'
+
+        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          echo "Not inside a git repository: $PWD"
+          exit 1
+        fi
+
+        git add -- "${{ inputs.output_directory }}"
+
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+          exit 0
+        fi
+
+        git commit -m "New Intervals.icu activities [skip ci]"
+        git push

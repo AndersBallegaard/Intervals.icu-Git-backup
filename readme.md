@@ -3,6 +3,8 @@
 
 ---
 
+In order to protect the great resource that is Intervals ICU, we only downloading the last two days of files. The action should run nightly, so this should be plenty.
+
 ## Setup with Github actions
 
 1. Create a github repository for your fit files. It is highly recormended that you use a private repo
