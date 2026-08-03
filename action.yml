@@ -40,20 +40,20 @@ runs:
         python ${{ github.action_path }}/backup.py
 
     - name: Commit and push changes
-        uses: devops-infra/action-commit-push@v1.5.0
-        with:
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
-          add_timestamp: true
-          amend: false
-          commit_prefix: "[AUTO]"
-          commit_message: "Automatic commit"
-          user_name: "Intervals.icu Backup Action"
-          user_email: "actions@github.com"
-          signing_mode: ""
-          signing_key: ""
-          signing_passphrase: ""
-          force: false
-          force_with_lease: false
-          no_edit: false
-          organization_domain: github.com
-          target_branch: update/version
+      uses: devops-infra/action-commit-push@v1.5.0
+      with:
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        add_timestamp: true
+        amend: false
+        commit_prefix: "[AUTO]"
+        commit_message: "Automatic commit"
+        user_name: "Intervals.icu Backup Action"
+        user_email: "actions@github.com"
+        signing_mode: ""
+        signing_key: ""
+        signing_passphrase: ""
+        force: false
+        force_with_lease: false
+        no_edit: false
+        organization_domain: github.com
+        target_branch: update/version
