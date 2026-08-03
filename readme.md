@@ -9,5 +9,8 @@
 
 2. In Intervals.icu settings, find your athleth ID and API key. If needed click on the pencil to create a key
 
+![ alt text](/assets/intervals_settings.png)
 
+3. Create an action secret for your repository called INTERVALS_ATHLETE_ID containing your Athlete ID
 
+4. Create an action secret for your repository called INTERVALS_API_KEY containing your API key
