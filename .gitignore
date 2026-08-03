@@ -1,3 +1,7 @@
+# Ignore downloaded fit files
+backups
+activities
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

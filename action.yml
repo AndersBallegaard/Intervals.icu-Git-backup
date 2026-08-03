@@ -1,0 +1,48 @@
+name: 'Intervals.icu git backup'
+description: 'Automatically backup your Intervals.icu activities a GitHub repository.'
+author: 'Anders Ballegaard'
+branding:
+  icon: 'arrow-up-circle'
+  color: 'red'
+
+inputs:
+  athlete_id:
+    description: 'Intervals.icu Athlete ID'
+    required: true
+  api_key:
+    description: 'Intervals.icu API Key'
+    required: true
+  output_directory:
+    description: 'Directory to store the backup files'
+    required: false
+    default: 'activities'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.14'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip install -r ${{ github.action_path }}/requirements.txt
+
+    - name: Run backup script
+      shell: bash
+      env:
+        INTERVALS_ATHLETE_ID: ${{ inputs.athlete_id }}
+        INTERVALS_API_KEY: ${{ inputs.api_key }}
+        FIT_FILE_BACKUP_DIR: ${{ inputs.output_directory }}
+      run: |
+        python ${{ github.action_path }}/backup.py
+
+    - name: Commit and push if there are changes
+      shell: bash
+      run: |
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git add "${{ github.workspace }}/${{ inputs.output_directory }}"/*.fit
+        git diff --quiet && git diff --staged --quiet || (git commit -m "New Intervals.icu activities [skip ci]" && git push)
