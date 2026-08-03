@@ -16,3 +16,27 @@ In order to protect the great resource that is Intervals ICU, we only downloadin
 3. Create an action secret for your repository called INTERVALS_ATHLETE_ID containing your Athlete ID
 
 4. Create an action secret for your repository called INTERVALS_API_KEY containing your API key
+
+5. Setup action in your repo. Create a new workflow file and add the following snippet
+```yaml
+name: IntervalsICU Fit file backup
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Intervals.icu git backup
+        uses: AndersBallegaard/Intervals.icu-Git-backup@main
+        with:
+          athlete_id: ${{ secrets.INTERVALS_ATHLETE_ID }}
+          api_key: ${{ secrets.INTERVALS_API_KEY }}
+```
