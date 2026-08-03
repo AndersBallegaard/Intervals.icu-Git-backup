@@ -39,24 +39,21 @@ runs:
       run: |
         python ${{ github.action_path }}/backup.py
 
-    - name: Commit and push if there are changes
-      shell: bash
-      working-directory: ${{ github.workspace }}
-      run: |
-        git config user.name 'GitHub Action'
-        git config user.email 'action@github.com'
-
-        if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          echo "Not inside a git repository: $PWD"
-          exit 1
-        fi
-
-        git add -- "${{ inputs.output_directory }}"
-
-        if git diff --cached --quiet; then
-          echo "No changes to commit"
-          exit 0
-        fi
-
-        git commit -m "New Intervals.icu activities [skip ci]"
-        git push
+    - name: Commit and push changes
+        uses: devops-infra/action-commit-push@v1.5.0
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          add_timestamp: true
+          amend: false
+          commit_prefix: "[AUTO]"
+          commit_message: "Automatic commit"
+          user_name: "Intervals.icu Backup Action"
+          user_email: "actions@github.com"
+          signing_mode: ""
+          signing_key: ""
+          signing_passphrase: ""
+          force: false
+          force_with_lease: false
+          no_edit: false
+          organization_domain: github.com
+          target_branch: update/version
